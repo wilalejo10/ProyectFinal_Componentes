@@ -21,7 +21,6 @@ fun WeekRow(
         contentPadding = PaddingValues(horizontal = 16.dp),
         horizontalArrangement = Arrangement.spacedBy(8.dp)
     ) {
-        // Recorre los días; solo el de la posición seleccionada sale resaltado.
         itemsIndexed(days) { index, day ->
             DayChip(
                 day = day,

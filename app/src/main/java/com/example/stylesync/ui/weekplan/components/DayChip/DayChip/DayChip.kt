@@ -15,7 +15,7 @@ import com.example.stylesync.data.model.DayPlan
 fun DayChip(
     day: DayPlan,
     selected: Boolean,
-    onClick: () -> Unit,   // quien usa el chip decide qué pasa al tocarlo
+    onClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     FilterChip(
