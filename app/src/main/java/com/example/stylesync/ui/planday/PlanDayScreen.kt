@@ -26,7 +26,7 @@ import com.example.stylesync.ui.planday.components.OccasionSelector
 fun PlanDayScreen(
     uiState: PlanDayUiState,
     onOccasionSelected: (Occasion) -> Unit,
-    onGarmentToggled: (String) -> Unit,
+    onGarmentToggled: (Int) -> Unit,
     onGenerateClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {

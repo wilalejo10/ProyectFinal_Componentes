@@ -1,12 +1,13 @@
 package com.example.stylesync.data.model
 
+import com.example.stylesync.data.local.entity.GarmentEntity
+
 object SampleData {
     val garments = listOf(
-        Garment("g1", "Camiseta blanca", "Top", "#F5F5F5"),
-        Garment("g2", "Jeans azules", "Pantalón", "#2F4F7F"),
-        Garment("g3", "Tenis negros", "Calzado", "#1A1A1A"),
-        Garment("g4", "Chaqueta beige", "Abrigo", "#D2B48C"),
-        Garment("g5", "Gorra roja", "Accesorio", "#B22222")
+        GarmentEntity(id = 1, name = "Camiseta blanca", category = "Top", colorHex = "#F5F5F5", imageUri = ""),
+        GarmentEntity(id = 2, name = "Jeans azules", category = "Bottom", colorHex = "#2F4F7F", imageUri = ""),
+        GarmentEntity(id = 3, name = "Tenis negros", category = "Calzado", colorHex = "#1A1A1A", imageUri = ""),
+        GarmentEntity(id = 4, name = "Chaqueta beige", category = "Accesorio", colorHex = "#D2B48C", imageUri = "")
     )
 
     val outfit = Outfit(
