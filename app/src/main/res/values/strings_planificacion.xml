@@ -1,0 +1,28 @@
+<resources>
+    <!-- Home -->
+    <string name="home_today_title">Tu outfit de hoy</string>
+    <string name="home_no_outfit">Aún no has planificado el outfit de hoy</string>
+    <string name="home_plan_week">Ver plan semanal</string>
+    <string name="weather_temperature">%1$d °C</string>
+
+    <!-- Plan semanal -->
+    <string name="week_plan_title">Plan semanal</string>
+    <string name="week_plan_plan_day">Planificar %1$s %2$d</string>
+
+    <!-- Planificar día -->
+    <string name="plan_day_title">Planificar día</string>
+    <string name="plan_day_occasion_label">Ocasión</string>
+    <string name="plan_day_garments_label">Elige tus prendas</string>
+    <string name="plan_day_generate">Armar outfit</string>
+    <string name="plan_day_error_occasion">Elige una ocasión</string>
+    <string name="plan_day_error_garments">Selecciona al menos una prenda</string>
+    <string name="occasion_casual">Casual</string>
+    <string name="occasion_work">Trabajo</string>
+    <string name="occasion_party">Fiesta</string>
+    <string name="occasion_sport">Deporte</string>
+
+    <!-- Resultado -->
+    <string name="result_title">Tu outfit</string>
+    <string name="result_palette_label">Paleta de colores</string>
+    <string name="result_plan_another">Planificar otro día</string>
+</resources>
