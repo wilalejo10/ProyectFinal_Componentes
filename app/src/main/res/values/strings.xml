@@ -1,3 +1,77 @@
 <resources>
     <string name="app_name">StyleSync</string>
+    <string name="splash_tagline">Your wardrobe, in sync</string>
+    <string name="generic_error">Something went wrong</string>
+
+    <!-- Actions -->
+    <string name="action_back">Back</string>
+    <string name="action_cancel">Cancel</string>
+    <string name="action_retry">Retry</string>
+
+    <!-- Bottom navigation / titles -->
+    <string name="nav_home">Home</string>
+    <string name="nav_closet">Closet</string>
+    <string name="nav_plan">Plan</string>
+    <string name="nav_reports">Reports</string>
+    <string name="nav_settings">Settings</string>
+
+    <!-- Auth -->
+    <string name="auth_login_title">Welcome back</string>
+    <string name="auth_register_title">Create your account</string>
+    <string name="auth_forgot_title">Recover password</string>
+    <string name="auth_forgot_hint">Enter your email and we\'ll send you a link to reset your password.</string>
+    <string name="auth_name">Name</string>
+    <string name="auth_email">Email</string>
+    <string name="auth_password">Password</string>
+    <string name="auth_confirm_password">Confirm password</string>
+    <string name="auth_show_password">Show password</string>
+    <string name="auth_hide_password">Hide password</string>
+    <string name="auth_login_button">Log in</string>
+    <string name="auth_register_button">Create account</string>
+    <string name="auth_send_link">Send link</string>
+    <string name="auth_forgot_link">Forgot your password?</string>
+    <string name="auth_no_account">Don\'t have an account? Sign up</string>
+    <string name="auth_have_account">Already have an account? Log in</string>
+    <string name="auth_recovery_sent">If the account exists, we sent a recovery email.</string>
+    <string name="auth_error_email_invalid">Enter a valid email</string>
+    <string name="auth_error_password_short">Password must be at least 6 characters</string>
+    <string name="auth_error_password_mismatch">Passwords don\'t match</string>
+    <string name="auth_error_name_empty">Enter your name</string>
+    <string name="auth_error_credentials">Wrong email or password</string>
+    <string name="auth_error_email_taken">That email is already registered</string>
+
+    <!-- Camera / permissions / picker -->
+    <string name="camera_title">Camera</string>
+    <string name="camera_take_photo">Take photo</string>
+    <string name="camera_gallery">Gallery</string>
+    <string name="camera_error">Could not take the photo</string>
+    <string name="permission_camera_title">Camera permission needed</string>
+    <string name="permission_camera_message">StyleSync uses the camera to photograph your garments.</string>
+    <string name="permission_grant">Allow</string>
+    <string name="permission_open_settings">Open settings</string>
+    <string name="picker_title">Add a photo</string>
+    <string name="picker_camera">Take a photo</string>
+    <string name="picker_gallery">Choose from gallery</string>
+
+    <!-- Settings -->
+    <string name="settings_title">Settings</string>
+    <string name="settings_account">Account</string>
+    <string name="settings_notifications">Notifications</string>
+    <string name="settings_reminder_time">Reminder time</string>
+    <string name="settings_logout">Log out</string>
+    <string name="settings_logout_confirm">Do you want to log out?</string>
+
+    <!-- Closet / garment form -->
+    <string name="closet_add">Add garment</string>
+    <string name="closet_empty_title">Your closet is empty</string>
+    <string name="closet_empty_message">Add your first garment with a photo.</string>
+    <string name="garment_detail_title">Garment</string>
+    <string name="garment_form_title_new">New garment</string>
+    <string name="garment_form_title_edit">Edit garment</string>
+    <string name="garment_name">Garment name</string>
+    <string name="garment_color">Color</string>
+    <string name="garment_add_photo">Add photo</string>
+    <string name="garment_change_photo">Change photo</string>
+    <string name="garment_save">Save garment</string>
+    <string name="garment_error_name">Name can\'t be empty</string>
 </resources>

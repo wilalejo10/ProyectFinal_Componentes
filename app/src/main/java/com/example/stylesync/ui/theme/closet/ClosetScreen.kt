@@ -1,14 +1,15 @@
 package com.example.stylesync.ui.theme.closet
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.lazy.grid.GridCells
-import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Checkroom
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.res.stringResource
+import com.example.stylesync.R
+import com.example.stylesync.ui.components.EmptyState
 import com.example.stylesync.ui.theme.components.CategoryFilterChips
-import com.example.stylesync.ui.theme.components.GarmentCard
 import com.example.stylesync.ui.theme.components.GarmentGrid
 
 @Composable
@@ -22,9 +23,14 @@ fun ClosetScreen(viewModel: ClosetViewModel, onNavigateToDetail: (Int) -> Unit) 
             selectedCategory = selectedCategory,
             onCategorySelected = { viewModel.setCategoryFilter(it) }
         )
-        GarmentGrid(
-            garments = garments,
-            onGarmentClick = onNavigateToDetail
-        )
-            }
+        if (garments.isEmpty()) {
+            EmptyState(
+                icon = Icons.Filled.Checkroom,
+                title = stringResource(R.string.closet_empty_title),
+                message = stringResource(R.string.closet_empty_message)
+            )
+        } else {
+            GarmentGrid(garments = garments, onGarmentClick = onNavigateToDetail)
+        }
+    }
 }

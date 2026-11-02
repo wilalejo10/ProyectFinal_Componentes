@@ -27,7 +27,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.example.stylesync.ui.theme.components.ColorChip
 import com.example.stylesync.ui.theme.components.ConfirmDialog
-
+import com.example.stylesync.ui.components.GarmentImage
 @Composable
 fun GarmentDetailScreen(
     viewModel: GarmentDetailViewModel,
@@ -44,12 +44,9 @@ fun GarmentDetailScreen(
 
     garment?.let { item ->
         Column(modifier = Modifier.padding(16.dp).fillMaxSize()) {
-            // Placeholder para la foto de la prenda
-            Box(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .height(250.dp)
-                    .background(Color.LightGray)
+            GarmentImage(
+                imageUri = item.imageUri,
+                modifier = Modifier.fillMaxWidth().height(250.dp)
             )
 
             Spacer(modifier = Modifier.height(16.dp))

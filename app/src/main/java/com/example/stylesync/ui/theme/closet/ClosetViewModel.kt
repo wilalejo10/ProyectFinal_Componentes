@@ -4,31 +4,29 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.stylesync.data.local.dao.GarmentDao
 import com.example.stylesync.data.local.entity.GarmentEntity
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.flow.flatMapLatest
+import kotlinx.coroutines.flow.stateIn
 
 class ClosetViewModel(private val dao: GarmentDao) : ViewModel() {
-    private val _garments = MutableStateFlow<List<GarmentEntity>>(emptyList())
-    val garments: StateFlow<List<GarmentEntity>> = _garments
 
     private val _selectedCategory = MutableStateFlow<String?>(null)
     val selectedCategory: StateFlow<String?> = _selectedCategory
 
     val categories = listOf("Top", "Bottom", "Calzado", "Accesorio")
 
-    init { loadGarments() }
+    // flatMapLatest cancela el filtro anterior: antes cada cambio de categoría dejaba un collector viejo vivo.
+    @OptIn(ExperimentalCoroutinesApi::class)
+    val garments: StateFlow<List<GarmentEntity>> = _selectedCategory
+        .flatMapLatest { category ->
+            if (category == null) dao.getAllGarments() else dao.getGarmentsByCategory(category)
+        }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), emptyList())
 
     fun setCategoryFilter(category: String?) {
         _selectedCategory.value = category
-        loadGarments()
-    }
-
-    private fun loadGarments() {
-        viewModelScope.launch {
-            val category = _selectedCategory.value
-            val flow = if (category == null) dao.getAllGarments() else dao.getGarmentsByCategory(category)
-            flow.collect { _garments.value = it }
-        }
     }
 }

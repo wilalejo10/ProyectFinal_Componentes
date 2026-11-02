@@ -12,12 +12,13 @@ fun GarmentGrid(
     onGarmentClick: (Int) -> Unit
 ) {
     LazyVerticalGrid(columns = GridCells.Fixed(2)) {
-        items(garments) { garment ->
+        items(garments, key = { it.id }) { garment ->
             GarmentCard(
                 garmentName = garment.name,
                 category = garment.category,
                 colorHex = garment.colorHex,
-                onClick = { onGarmentClick(garment.id) }
+                onClick = { onGarmentClick(garment.id) },
+                imageUri = garment.imageUri
             )
         }
     }

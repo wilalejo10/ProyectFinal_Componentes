@@ -4,13 +4,11 @@ import android.content.Context
 import androidx.room3.Database
 import androidx.room3.Room
 import androidx.room3.RoomDatabase
-import androidx.sqlite.SQLiteConnection
+import androidx.sqlite.driver.bundled.BundledSQLiteDriver
 import com.example.stylesync.data.local.dao.GarmentDao
 import com.example.stylesync.data.local.entity.GarmentEntity
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.launch
 
+// Room 3 necesita KSP (room3-compiler) y un SQLiteDriver explícito.
 @Database(entities = [GarmentEntity::class], version = 1, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun garmentDao(): GarmentDao
@@ -19,34 +17,15 @@ abstract class AppDatabase : RoomDatabase() {
         @Volatile
         private var INSTANCE: AppDatabase? = null
 
-        fun getDatabase(context: Context): AppDatabase {
-            return INSTANCE ?: synchronized(this) {
-                val instance = Room.databaseBuilder(
-                    context.applicationContext,
-                    AppDatabase::class.java,
-                    "outfit_database"
+        fun getDatabase(context: Context): AppDatabase =
+            INSTANCE ?: synchronized(this) {
+                INSTANCE ?: Room.databaseBuilder<AppDatabase>(
+                    context = context.applicationContext,
+                    name = "outfit_database"
                 )
-                    .addCallback(DatabaseCallback())
+                    .setDriver(BundledSQLiteDriver())
                     .build()
-                INSTANCE = instance
-                instance
+                    .also { INSTANCE = it }
             }
-        }
-    }
-
-    private class DatabaseCallback : RoomDatabase.Callback() {
-        override suspend fun onCreate(connection: SQLiteConnection) {
-            super.onCreate(connection)
-
-            INSTANCE?.let { database ->
-                CoroutineScope(Dispatchers.IO).launch {
-                    val dao = database.garmentDao()
-                    // Datos temporales para Entrega 1
-                    dao.insertGarment(GarmentEntity(name = "Camiseta Básica", category = "Top", colorHex = "#FFFFFF", imageUri = ""))
-                    dao.insertGarment(GarmentEntity(name = "Jeans Azules", category = "Bottom", colorHex = "#0000FF", imageUri = ""))
-                    dao.insertGarment(GarmentEntity(name = "Tenis Blancos", category = "Calzado", colorHex = "#FFFFFF", imageUri = ""))
-                }
-            }
-        }
     }
 }

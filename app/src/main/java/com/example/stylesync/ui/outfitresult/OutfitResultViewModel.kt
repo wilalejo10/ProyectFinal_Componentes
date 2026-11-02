@@ -1,12 +1,16 @@
 package com.example.stylesync.ui.outfitresult
 
 import androidx.lifecycle.ViewModel
-import com.example.stylesync.data.model.SampleData
-import kotlinx.coroutines.flow.MutableStateFlow
+import androidx.lifecycle.viewModelScope
+import com.example.stylesync.data.PlanStore
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 
 class OutfitResultViewModel : ViewModel() {
-    private val _uiState = MutableStateFlow(OutfitResultUiState(outfit = SampleData.outfit))
-    val uiState: StateFlow<OutfitResultUiState> = _uiState.asStateFlow()
+    // Muestra el outfit que se acaba de armar en "Planificar día" (ya no el de SampleData).
+    val uiState: StateFlow<OutfitResultUiState> = PlanStore.lastOutfit
+        .map { OutfitResultUiState(outfit = it) }
+        .stateIn(viewModelScope, SharingStarted.WhileSubscribed(5_000), OutfitResultUiState())
 }
