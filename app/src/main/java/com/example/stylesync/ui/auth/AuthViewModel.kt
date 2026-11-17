@@ -23,12 +23,12 @@ class AuthViewModel(private val session: SessionManager) : ViewModel() {
     var loading by mutableStateOf(false)
         private set
 
-    @StringRes var nameError by mutableStateOf<Int?>(null)
-    @StringRes var emailError by mutableStateOf<Int?>(null)
-    @StringRes var passwordError by mutableStateOf<Int?>(null)
-    @StringRes var confirmError by mutableStateOf<Int?>(null)
-    @StringRes var formError by mutableStateOf<Int?>(null)
-    @StringRes var infoMessage by mutableStateOf<Int?>(null)
+    var nameError by mutableStateOf<Int?>(null)
+    var emailError by mutableStateOf<Int?>(null)
+    var passwordError by mutableStateOf<Int?>(null)
+    var confirmError by mutableStateOf<Int?>(null)
+    var formError by mutableStateOf<Int?>(null)
+    var infoMessage by mutableStateOf<Int?>(null)
 
     private fun clearErrors() {
         nameError = null; emailError = null; passwordError = null

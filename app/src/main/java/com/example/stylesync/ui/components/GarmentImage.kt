@@ -12,10 +12,18 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import coil3.compose.AsyncImage
 
-/** Foto de la prenda; si no tiene, muestra un recuadro gris con un ícono. */
+/**
+ * Foto de la prenda. Usa la ruta local si existe; si no (prenda bajada de Firestore),
+ * usa la URL de Storage. Sin ninguna de las dos, muestra un recuadro con un icono.
+ */
 @Composable
-fun GarmentImage(imageUri: String, modifier: Modifier = Modifier) {
-    if (imageUri.isBlank()) {
+fun GarmentImage(
+    imageUri: String,
+    modifier: Modifier = Modifier,
+    imageUrl: String = ""
+) {
+    val model = imageUri.ifBlank { imageUrl }
+    if (model.isBlank()) {
         Box(
             modifier = modifier.background(MaterialTheme.colorScheme.surfaceVariant),
             contentAlignment = Alignment.Center
@@ -28,7 +36,7 @@ fun GarmentImage(imageUri: String, modifier: Modifier = Modifier) {
         }
     } else {
         AsyncImage(
-            model = imageUri,
+            model = model,
             contentDescription = null,
             contentScale = ContentScale.Crop,
             modifier = modifier

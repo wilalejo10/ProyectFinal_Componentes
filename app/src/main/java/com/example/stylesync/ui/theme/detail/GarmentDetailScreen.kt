@@ -1,6 +1,5 @@
 package com.example.stylesync.ui.theme.detail
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,6 +9,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Checkroom
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
@@ -22,12 +23,16 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.stylesync.R
+import com.example.stylesync.ui.components.EmptyState
+import com.example.stylesync.ui.components.GarmentImage
 import com.example.stylesync.ui.theme.components.ColorChip
 import com.example.stylesync.ui.theme.components.ConfirmDialog
-import com.example.stylesync.ui.components.GarmentImage
+
 @Composable
 fun GarmentDetailScreen(
     viewModel: GarmentDetailViewModel,
@@ -36,60 +41,84 @@ fun GarmentDetailScreen(
     onNavigateToEdit: (Int) -> Unit
 ) {
     val garment by viewModel.garment.collectAsState()
+    val notFound by viewModel.notFound.collectAsState()
     var showDeleteDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(garmentId) {
         viewModel.loadGarment(garmentId)
     }
 
-    garment?.let { item ->
-        Column(modifier = Modifier.padding(16.dp).fillMaxSize()) {
-            GarmentImage(
-                imageUri = item.imageUri,
-                modifier = Modifier.fillMaxWidth().height(250.dp)
-            )
+    val item = garment
+    when {
+        // ---- Prenda cargada ----
+        item != null -> {
+            Column(modifier = Modifier.padding(16.dp).fillMaxSize()) {
+                GarmentImage(
+                    imageUri = item.imageUri,
+                    imageUrl = item.imageUrl,
+                    modifier = Modifier.fillMaxWidth().height(250.dp)
+                )
 
-            Spacer(modifier = Modifier.height(16.dp))
+                Spacer(modifier = Modifier.height(16.dp))
 
-            Text(text = item.name, style = MaterialTheme.typography.headlineMedium)
-            Text(text = "Categoría: ${item.category}", style = MaterialTheme.typography.bodyLarge)
+                Text(text = item.name, style = MaterialTheme.typography.headlineMedium)
+                Text(
+                    text = stringResource(R.string.detail_category, item.category),
+                    style = MaterialTheme.typography.bodyLarge
+                )
 
-            Spacer(modifier = Modifier.height(8.dp))
-            Row {
-                Text(text = "Color: ", style = MaterialTheme.typography.bodyLarge)
-                ColorChip(colorHex = item.colorHex)
-            }
-
-            Spacer(modifier = Modifier.weight(1f))
-
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                Button(onClick = { onNavigateToEdit(item.id) }) {
-                    Text("Editar")
+                Spacer(modifier = Modifier.height(8.dp))
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    Text(
+                        text = stringResource(R.string.detail_color) + " ",
+                        style = MaterialTheme.typography.bodyLarge
+                    )
+                    ColorChip(colorHex = item.colorHex)
                 }
-                Button(
-                    onClick = { showDeleteDialog = true },
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.error)
+
+                Spacer(modifier = Modifier.weight(1f))
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
-                    Text("Eliminar")
+                    Button(onClick = { onNavigateToEdit(item.id) }) {
+                        Text(stringResource(R.string.detail_edit))
+                    }
+                    Button(
+                        onClick = { showDeleteDialog = true },
+                        colors = ButtonDefaults.buttonColors(
+                            containerColor = MaterialTheme.colorScheme.error
+                        )
+                    ) {
+                        Text(stringResource(R.string.detail_delete))
+                    }
                 }
             }
+
+            ConfirmDialog(
+                showDialog = showDeleteDialog,
+                title = stringResource(R.string.detail_delete_title),
+                message = stringResource(R.string.detail_delete_message),
+                onConfirm = {
+                    showDeleteDialog = false
+                    viewModel.deleteGarment(onDeleted = onNavigateUp)
+                },
+                onDismiss = { showDeleteDialog = false }
+            )
         }
 
-        ConfirmDialog(
-            showDialog = showDeleteDialog,
-            title = "Eliminar Prenda",
-            message = "¿Estás seguro de que deseas eliminar esta prenda? Esta acción no se puede deshacer.",
-            onConfirm = {
-                showDeleteDialog = false
-                viewModel.deleteGarment(onDeleted = onNavigateUp)
-            },
-            onDismiss = { showDeleteDialog = false }
+        // ---- Error: la prenda no existe ----
+        notFound -> EmptyState(
+            icon = Icons.Filled.Checkroom,
+            title = stringResource(R.string.detail_not_found_title),
+            message = stringResource(R.string.detail_not_found_message),
+            actionText = stringResource(R.string.detail_back),
+            onAction = onNavigateUp
         )
-    } ?: run {
-        Box(modifier = Modifier.fillMaxSize(), contentAlignment = androidx.compose.ui.Alignment.Center) {
+
+        // ---- Cargando ----
+        else -> Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
             CircularProgressIndicator()
         }
     }

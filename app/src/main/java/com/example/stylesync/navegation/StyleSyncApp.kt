@@ -32,6 +32,8 @@ import com.example.stylesync.R
 import com.example.stylesync.data.PlanStore
 import com.example.stylesync.data.local.AppDatabase
 import com.example.stylesync.data.local.SessionManager
+import com.example.stylesync.data.remote.GarmentRemoteDataSource
+import com.example.stylesync.data.repository.GarmentRepository
 import com.example.stylesync.di.AppViewModelFactory
 import com.example.stylesync.ui.auth.AuthViewModel
 import com.example.stylesync.ui.auth.ForgotPasswordScreen
@@ -47,6 +49,8 @@ import com.example.stylesync.ui.outfitresult.OutfitResultScreen
 import com.example.stylesync.ui.outfitresult.OutfitResultViewModel
 import com.example.stylesync.ui.planday.PlanDayScreen
 import com.example.stylesync.ui.planday.PlanDayViewModel
+import com.example.stylesync.ui.reports.ReportsScreen
+import com.example.stylesync.ui.reports.ReportsViewModel
 import com.example.stylesync.ui.settings.SettingsScreen
 import com.example.stylesync.ui.settings.SettingsViewModel
 import com.example.stylesync.ui.splash.SplashScreen
@@ -56,17 +60,22 @@ import com.example.stylesync.ui.theme.detail.GarmentDetailScreen
 import com.example.stylesync.ui.theme.detail.GarmentDetailViewModel
 import com.example.stylesync.ui.theme.form.AddEditGarmentScreen
 import com.example.stylesync.ui.theme.form.AddGarmentViewModel
-import com.example.stylesync.ui.theme.reports.ReportsScreen
 import com.example.stylesync.ui.weekplan.WeekPlanScreen
 import com.example.stylesync.ui.weekplan.WeekPlanViewModel
 
-/** Raíz de la app: barra inferior + NavGraph completo (auth y principal). */
+/** Raiz de la app: barra inferior + NavGraph completo (auth y principal). */
 @Composable
 fun StyleSyncApp() {
     val context = LocalContext.current.applicationContext
     val session = remember { SessionManager(context) }
     val factory = remember {
-        AppViewModelFactory(AppDatabase.getDatabase(context).garmentDao(), session)
+        val dao = AppDatabase.getDatabase(context).garmentDao()
+        AppViewModelFactory(
+            dao = dao,
+            session = session,
+            appContext = context,
+            repository = GarmentRepository(dao, GarmentRemoteDataSource())
+        )
     }
     val navController = rememberNavController()
     val currentRoute = navController.currentBackStackEntryAsState().value?.destination?.route
@@ -132,7 +141,7 @@ fun StyleSyncApp() {
                 ForgotPasswordScreen(viewModel = vm, onBack = { navController.popBackStack() })
             }
 
-            // ---------- PESTAÑAS ----------
+            // ---------- PESTANAS ----------
             composable(Routes.HOME) {
                 val vm: HomeViewModel = viewModel()
                 val state by vm.uiState.collectAsStateWithLifecycle()
@@ -178,8 +187,9 @@ fun StyleSyncApp() {
                 }
             }
             composable(Routes.REPORTS) {
+                val vm: ReportsViewModel = viewModel(factory = factory)
                 TitledScreen(stringResource(R.string.nav_reports)) { m ->
-                    Box(m) { ReportsScreen() }
+                    ReportsScreen(viewModel = vm, modifier = m)
                 }
             }
             composable(Routes.SETTINGS) {
@@ -226,7 +236,7 @@ fun StyleSyncApp() {
                 val vm: AddGarmentViewModel = viewModel(factory = factory)
                 LaunchedEffect(id) { vm.load(id) }
 
-                // La cámara deja aquí la foto tomada.
+                // La camara deja aqui la foto tomada.
                 val photo by entry.savedStateHandle
                     .getStateFlow<String?>(Routes.KEY_PHOTO, null)
                     .collectAsStateWithLifecycle()
@@ -306,7 +316,7 @@ fun StyleSyncApp() {
     }
 }
 
-/** Cambia de pestaña conservando el estado de cada una. */
+/** Cambia de pestana conservando el estado de cada una. */
 private fun NavHostController.goToTab(route: String) {
     navigate(route) {
         popUpTo(Routes.HOME) { saveState = true }
@@ -315,7 +325,7 @@ private fun NavHostController.goToTab(route: String) {
     }
 }
 
-/** Marco común: barra superior + botón flotante opcional. */
+/** Marco comun: barra superior + boton flotante opcional. */
 @Composable
 private fun TitledScreen(
     title: String,

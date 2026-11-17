@@ -1,18 +1,17 @@
 package com.example.stylesync.ui.planday
 
 import androidx.lifecycle.ViewModel
-import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
-import com.example.stylesync.data.local.dao.GarmentDao
 import com.example.stylesync.data.model.Occasion
 import com.example.stylesync.data.model.Outfit
+import com.example.stylesync.data.repository.GarmentRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 
-class PlanDayViewModel(private val dao: GarmentDao) : ViewModel() {
+class PlanDayViewModel(private val repository: GarmentRepository) : ViewModel() {
 
     private val _uiState = MutableStateFlow(PlanDayUiState())
     val uiState: StateFlow<PlanDayUiState> = _uiState.asStateFlow()
@@ -23,7 +22,7 @@ class PlanDayViewModel(private val dao: GarmentDao) : ViewModel() {
 
     private fun loadGarments() {
         viewModelScope.launch {
-            dao.getAllGarments().collect { garments ->
+            repository.garments.collect { garments ->
                 _uiState.update { it.copy(availableGarments = garments) }
             }
         }
@@ -60,12 +59,5 @@ class PlanDayViewModel(private val dao: GarmentDao) : ViewModel() {
             garments = chosen,
             paletteHex = chosen.map { it.colorHex }.distinct()
         )
-    }
-}
-
-class PlanDayViewModelFactory(private val dao: GarmentDao) : ViewModelProvider.Factory {
-    @Suppress("UNCHECKED_CAST")
-    override fun <T : ViewModel> create(modelClass: Class<T>): T {
-        return PlanDayViewModel(dao) as T
     }
 }

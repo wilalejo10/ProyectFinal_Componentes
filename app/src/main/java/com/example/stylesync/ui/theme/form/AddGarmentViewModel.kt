@@ -1,31 +1,30 @@
 package com.example.stylesync.ui.theme.form
 
-import androidx.annotation.StringRes
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.example.stylesync.R
-import com.example.stylesync.data.local.dao.GarmentDao
 import com.example.stylesync.data.local.entity.GarmentEntity
+import com.example.stylesync.data.repository.GarmentRepository
 import kotlinx.coroutines.launch
 
-class AddGarmentViewModel(private val dao: GarmentDao) : ViewModel() {
+class AddGarmentViewModel(private val repo: GarmentRepository) : ViewModel() {
     var name by mutableStateOf("")
     var category by mutableStateOf("Top")
     var colorHex by mutableStateOf("#000000")
     var imageUri by mutableStateOf("")
-    @StringRes var errorRes by mutableStateOf<Int?>(null)
+    var errorRes by mutableStateOf<Int?>(null)
 
-    private var editingId = 0
+    private var editing: GarmentEntity? = null
 
-    /** Carga la prenda cuando se abre el formulario en modo edición (id > 0). */
+    /** Carga la prenda cuando se abre el formulario en modo edicion (id > 0). */
     fun load(id: Int) {
-        if (id <= 0 || editingId == id) return
+        if (id <= 0 || editing?.id == id) return
         viewModelScope.launch {
-            dao.getGarmentById(id)?.let {
-                editingId = it.id
+            repo.getById(id)?.let {
+                editing = it
                 name = it.name
                 category = it.category
                 colorHex = it.colorHex
@@ -40,14 +39,25 @@ class AddGarmentViewModel(private val dao: GarmentDao) : ViewModel() {
             return
         }
         viewModelScope.launch {
-            val garment = GarmentEntity(
-                id = editingId, // 0 = nueva (autogenera id)
-                name = name.trim(),
-                category = category,
-                colorHex = colorHex,
-                imageUri = imageUri
-            )
-            if (editingId > 0) dao.updateGarment(garment) else dao.insertGarment(garment)
+            val base = editing
+            val garment = if (base != null) {
+                base.copy(
+                    name = name.trim(),
+                    category = category,
+                    colorHex = colorHex,
+                    imageUri = imageUri,
+                    // si cambio la foto, se vuelve a subir
+                    imageUrl = if (imageUri != base.imageUri) "" else base.imageUrl
+                )
+            } else {
+                GarmentEntity(
+                    name = name.trim(),
+                    category = category,
+                    colorHex = colorHex,
+                    imageUri = imageUri
+                )
+            }
+            repo.save(garment)
             onSuccess()
         }
     }

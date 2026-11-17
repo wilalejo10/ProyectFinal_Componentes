@@ -18,7 +18,8 @@ fun GarmentGrid(
                 category = garment.category,
                 colorHex = garment.colorHex,
                 onClick = { onGarmentClick(garment.id) },
-                imageUri = garment.imageUri
+                imageUri = garment.imageUri,
+                imageUrl = garment.imageUrl
             )
         }
     }

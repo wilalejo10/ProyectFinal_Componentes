@@ -9,7 +9,7 @@ import com.example.stylesync.data.local.dao.GarmentDao
 import com.example.stylesync.data.local.entity.GarmentEntity
 
 // Room 3 necesita KSP (room3-compiler) y un SQLiteDriver explícito.
-@Database(entities = [GarmentEntity::class], version = 1, exportSchema = false)
+@Database(entities = [GarmentEntity::class], version = 2, exportSchema = false)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun garmentDao(): GarmentDao
 
@@ -24,8 +24,8 @@ abstract class AppDatabase : RoomDatabase() {
                     name = "outfit_database"
                 )
                     .setDriver(BundledSQLiteDriver())
+                    .fallbackToDestructiveMigration(dropAllTables = true)
                     .build()
-                    .also { INSTANCE = it }
             }
     }
 }

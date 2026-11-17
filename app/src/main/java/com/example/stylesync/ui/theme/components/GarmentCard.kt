@@ -20,7 +20,8 @@ fun GarmentCard(
     category: String,
     colorHex: String,
     onClick: () -> Unit,
-    imageUri: String = ""
+    imageUri: String = "",
+    imageUrl: String = ""
 ) {
     Card(
         modifier = Modifier
@@ -29,7 +30,11 @@ fun GarmentCard(
             .clickable { onClick() }
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            GarmentImage(imageUri = imageUri, modifier = Modifier.fillMaxWidth().height(100.dp))
+            GarmentImage(
+                imageUri = imageUri,
+                imageUrl = imageUrl,
+                modifier = Modifier.fillMaxWidth().height(100.dp)
+            )
             Spacer(modifier = Modifier.height(8.dp))
             Text(text = garmentName, style = MaterialTheme.typography.titleMedium)
             Text(text = category, style = MaterialTheme.typography.bodySmall)
