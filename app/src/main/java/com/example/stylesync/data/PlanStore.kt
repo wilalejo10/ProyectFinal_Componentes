@@ -3,23 +3,16 @@ package com.example.stylesync.data
 import com.example.stylesync.data.local.entity.GarmentEntity
 import com.example.stylesync.data.model.DayPlan
 import com.example.stylesync.data.model.Outfit
+import com.example.stylesync.data.model.WeekCalendar
+import com.example.stylesync.data.repository.PlanRepository
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.update
 
-/**
- * Almacen en memoria del plan semanal: una sola fuente de verdad para
- * Plan semanal -> Planificar dia -> Resultado -> Home -> Reportes.
- */
 object PlanStore {
     var selectedDay: DayPlan? = null
 
-    private val _week = MutableStateFlow(
-        listOf(
-            DayPlan("Lun", 28), DayPlan("Mar", 29), DayPlan("Mi\u00E9", 30),
-            DayPlan("Jue", 1), DayPlan("Vie", 2), DayPlan("S\u00E1b", 3), DayPlan("Dom", 4)
-        )
-    )
+    private val _week = MutableStateFlow(WeekCalendar.currentWeek())
     val week: StateFlow<List<DayPlan>> = _week
 
     private val _lastOutfit = MutableStateFlow<Outfit?>(null)
@@ -28,15 +21,31 @@ object PlanStore {
     fun save(outfit: Outfit) {
         _lastOutfit.value = outfit
         val day = selectedDay ?: return
+
         _week.update { days ->
             days.map {
-                if (it.dayLabel == day.dayLabel && it.dayNumber == day.dayNumber) it.copy(outfit = outfit)
+                if (sameDay(it, day)) it.copy(occasion = outfit.occasion ?: it.occasion, outfit = outfit)
                 else it
+            }
+        }
+
+        val date = _week.value.firstOrNull { sameDay(it, day) }?.date.orEmpty()
+        if (date.isNotBlank()) PlanRepository.persist(date, outfit)
+    }
+
+    fun replaceWeek(loaded: List<DayPlan>) {
+        _week.update { current ->
+            loaded.map { fromServer ->
+                val inMemory = current.firstOrNull { sameDay(it, fromServer) }
+                if (inMemory?.outfit != null) inMemory else fromServer
             }
         }
     }
 
-    /** Los 7 dias con sus prendas, para el PDF. */
     fun weekForReport(): List<Pair<String, List<GarmentEntity>>> =
         _week.value.map { "${it.dayLabel} ${it.dayNumber}" to (it.outfit?.garments ?: emptyList()) }
+
+    private fun sameDay(a: DayPlan, b: DayPlan): Boolean =
+        if (a.date.isNotBlank() && b.date.isNotBlank()) a.date == b.date
+        else a.dayLabel == b.dayLabel && a.dayNumber == b.dayNumber
 }

@@ -8,5 +8,6 @@ data class PlanDayUiState(
     val occasion: Occasion? = null,
     val selectedGarmentIds: Set<Int> = emptySet(),
     val occasionError: Boolean = false,
-    val garmentsError: Boolean = false
+    val garmentsError: Boolean = false,
+    val generateError: Boolean = false
 )

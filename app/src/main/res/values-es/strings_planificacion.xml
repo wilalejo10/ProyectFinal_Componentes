@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Home -->
+    <string name="home_today_title">Tu outfit de hoy</string>
+    <string name="home_no_outfit">Aún no has planificado el outfit de hoy</string>
+    <string name="home_plan_week">Ver plan semanal</string>
+    <string name="weather_temperature">%1$d °C</string>
+
+    <!-- Plan semanal -->
+    <string name="week_plan_title">Plan semanal</string>
+    <string name="week_plan_plan_day">Planificar %1$s %2$d</string>
+    <string name="week_plan_no_outfit">Aún no hay un outfit para este día</string>
+
+    <!-- Planificar día -->
+    <string name="plan_day_title">Planificar día</string>
+    <string name="plan_day_occasion_label">Ocasión</string>
+    <string name="plan_day_garments_label">Elige tus prendas</string>
+    <string name="plan_day_empty_garments">Aún no tienes prendas. Agrégalas en el armario para armar un outfit.</string>
+    <string name="plan_day_generate">Armar outfit</string>
+    <string name="plan_day_generate_color">Generar con colorimetría</string>
+    <string name="plan_day_error_occasion">Elige una ocasión</string>
+    <string name="plan_day_error_garments">Selecciona al menos una prenda</string>
+    <string name="plan_day_error_generate">No hay suficientes prendas sin repetir para armar un outfit completo. Necesitas al menos un top, un bottom y un calzado que no hayas usado esta semana.</string>
+    <string name="occasion_casual">Casual</string>
+    <string name="occasion_work">Trabajo</string>
+    <string name="occasion_party">Fiesta</string>
+    <string name="occasion_sport">Deporte</string>
+
+    <!-- Resultado -->
+    <string name="result_title">Tu outfit</string>
+    <string name="result_palette_label">Paleta de colores</string>
+    <string name="result_plan_another">Planificar otro día</string>
+
+    <!-- Clima -->
+    <string name="weather_loading">Cargando el clima…</string>
+    <string name="weather_error">No se pudo cargar el clima. Revisa tu conexión.</string>
+    <string name="weather_retry">Reintentar</string>
+    <string name="weather_cond_clear">Despejado</string>
+    <string name="weather_cond_partly_cloudy">Parcialmente nublado</string>
+    <string name="weather_cond_cloudy">Nublado</string>
+    <string name="weather_cond_fog">Niebla</string>
+    <string name="weather_cond_drizzle">Llovizna</string>
+    <string name="weather_cond_rain">Lluvia</string>
+    <string name="weather_cond_snow">Nieve</string>
+    <string name="weather_cond_storm">Tormenta</string>
+</resources>

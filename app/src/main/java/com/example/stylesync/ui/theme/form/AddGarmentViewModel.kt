@@ -8,6 +8,7 @@ import androidx.lifecycle.viewModelScope
 import com.example.stylesync.R
 import com.example.stylesync.data.local.entity.GarmentEntity
 import com.example.stylesync.data.repository.GarmentRepository
+import com.example.stylesync.domain.color.PaletteColorExtractor
 import kotlinx.coroutines.launch
 
 class AddGarmentViewModel(private val repo: GarmentRepository) : ViewModel() {
@@ -40,20 +41,27 @@ class AddGarmentViewModel(private val repo: GarmentRepository) : ViewModel() {
         }
         viewModelScope.launch {
             val base = editing
+
+            val photoIsNew = imageUri.isNotBlank() && imageUri != base?.imageUri
+            val finalColor = if (photoIsNew) {
+                PaletteColorExtractor.dominantHex(imageUri) ?: colorHex
+            } else {
+                colorHex
+            }
+
             val garment = if (base != null) {
                 base.copy(
                     name = name.trim(),
                     category = category,
-                    colorHex = colorHex,
+                    colorHex = finalColor,
                     imageUri = imageUri,
-                    // si cambio la foto, se vuelve a subir
                     imageUrl = if (imageUri != base.imageUri) "" else base.imageUrl
                 )
             } else {
                 GarmentEntity(
                     name = name.trim(),
                     category = category,
-                    colorHex = colorHex,
+                    colorHex = finalColor,
                     imageUri = imageUri
                 )
             }

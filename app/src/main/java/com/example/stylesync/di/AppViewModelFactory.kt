@@ -28,7 +28,7 @@ class AppViewModelFactory(
             modelClass.isAssignableFrom(ClosetViewModel::class.java) -> ClosetViewModel(repository)
             modelClass.isAssignableFrom(GarmentDetailViewModel::class.java) -> GarmentDetailViewModel(repository)
             modelClass.isAssignableFrom(AddGarmentViewModel::class.java) -> AddGarmentViewModel(repository)
-            modelClass.isAssignableFrom(PlanDayViewModel::class.java) -> PlanDayViewModel(dao)
+            modelClass.isAssignableFrom(PlanDayViewModel::class.java) -> PlanDayViewModel(repository)
             modelClass.isAssignableFrom(ReportsViewModel::class.java) -> ReportsViewModel(appContext, repository)
             modelClass.isAssignableFrom(AuthViewModel::class.java) -> AuthViewModel(session)
             modelClass.isAssignableFrom(SettingsViewModel::class.java) -> SettingsViewModel(session)

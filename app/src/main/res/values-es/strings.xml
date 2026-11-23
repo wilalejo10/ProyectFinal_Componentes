@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="detail_category">Categor\u00EDa: %1$s</string>
+    <string name="detail_color">Color:</string>
+    <string name="detail_edit">Editar</string>
+    <string name="detail_delete">Eliminar</string>
+    <string name="detail_delete_title">Eliminar prenda</string>
+    <string name="detail_delete_message">\u00BFEst\u00E1s seguro de que deseas eliminar esta prenda? Esta acci\u00F3n no se puede deshacer.</string>
+    <string name="detail_not_found_title">Prenda no encontrada</string>
+    <string name="detail_not_found_message">Esta prenda ya no existe.</string>
+    <string name="detail_back">Volver</string>
+    <string name="closet_filter_empty_title">No hay prendas en esta categor\u00EDa</string>
+    <string name="closet_filter_empty_message">Prueba otra categor\u00EDa o agrega una prenda nueva.</string>
+    <string name="closet_sync_error">No se pudo sincronizar. Se muestran las prendas guardadas.</string>
+    <string name="closet_retry">Reintentar</string>
+    <string name="garment_error_save">No se pudo guardar la prenda. Intenta de nuevo.</string>
+    <string name="report_empty_inventory">A\u00FAn no tienes prendas. Agrega algunas para exportar el inventario.</string>
+    <string name="report_empty_week">A\u00FAn no hay outfits planeados esta semana. Planea al menos un d\u00EDa.</string>
+    <string name="report_weekly_title">Outfit semanal</string>
+</resources>

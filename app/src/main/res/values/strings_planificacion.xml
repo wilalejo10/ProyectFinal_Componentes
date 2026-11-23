@@ -1,6 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <!-- Home -->
-    <string name="home_today_title">Your outfit for today</string>
+    <string name="home_today_title">Today\'s outfit</string>
     <string name="home_no_outfit">You haven\'t planned today\'s outfit yet</string>
     <string name="home_plan_week">View weekly plan</string>
     <string name="weather_temperature">%1$d °C</string>
@@ -8,21 +9,38 @@
     <!-- Weekly plan -->
     <string name="week_plan_title">Weekly plan</string>
     <string name="week_plan_plan_day">Plan %1$s %2$d</string>
+    <string name="week_plan_no_outfit">There is no outfit for this day yet</string>
 
     <!-- Plan day -->
     <string name="plan_day_title">Plan day</string>
     <string name="plan_day_occasion_label">Occasion</string>
-    <string name="plan_day_garments_label">Pick your garments</string>
+    <string name="plan_day_garments_label">Choose your garments</string>
+    <string name="plan_day_empty_garments">You don\'t have any garments yet. Add some in the closet to build an outfit.</string>
     <string name="plan_day_generate">Build outfit</string>
-    <string name="plan_day_error_occasion">Pick an occasion</string>
+    <string name="plan_day_generate_color">Generate with color matching</string>
+    <string name="plan_day_error_occasion">Choose an occasion</string>
     <string name="plan_day_error_garments">Select at least one garment</string>
+    <string name="plan_day_error_generate">There are not enough unused garments to build a full outfit. You need at least one top, one bottom and one pair of shoes you haven\'t used this week.</string>
     <string name="occasion_casual">Casual</string>
     <string name="occasion_work">Work</string>
     <string name="occasion_party">Party</string>
     <string name="occasion_sport">Sport</string>
 
-    <!-- Result -->
+    <!-- Outfit result -->
     <string name="result_title">Your outfit</string>
     <string name="result_palette_label">Color palette</string>
     <string name="result_plan_another">Plan another day</string>
+
+    <!-- Weather -->
+    <string name="weather_loading">Loading the weather…</string>
+    <string name="weather_error">Could not load the weather. Check your connection.</string>
+    <string name="weather_retry">Retry</string>
+    <string name="weather_cond_clear">Clear</string>
+    <string name="weather_cond_partly_cloudy">Partly cloudy</string>
+    <string name="weather_cond_cloudy">Cloudy</string>
+    <string name="weather_cond_fog">Fog</string>
+    <string name="weather_cond_drizzle">Drizzle</string>
+    <string name="weather_cond_rain">Rain</string>
+    <string name="weather_cond_snow">Snow</string>
+    <string name="weather_cond_storm">Thunderstorm</string>
 </resources>

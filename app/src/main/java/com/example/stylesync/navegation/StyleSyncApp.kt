@@ -62,19 +62,21 @@ import com.example.stylesync.ui.theme.form.AddEditGarmentScreen
 import com.example.stylesync.ui.theme.form.AddGarmentViewModel
 import com.example.stylesync.ui.weekplan.WeekPlanScreen
 import com.example.stylesync.ui.weekplan.WeekPlanViewModel
+import com.example.stylesync.data.repository.PlanRepository
 
-/** Raiz de la app: barra inferior + NavGraph completo (auth y principal). */
 @Composable
 fun StyleSyncApp() {
     val context = LocalContext.current.applicationContext
     val session = remember { SessionManager(context) }
     val factory = remember {
         val dao = AppDatabase.getDatabase(context).garmentDao()
+        val garmentRepository = GarmentRepository(dao, GarmentRemoteDataSource())
+        PlanRepository.attach(garmentRepository)
         AppViewModelFactory(
             dao = dao,
             session = session,
             appContext = context,
-            repository = GarmentRepository(dao, GarmentRemoteDataSource())
+            repository = garmentRepository
         )
     }
     val navController = rememberNavController()
@@ -149,6 +151,7 @@ fun StyleSyncApp() {
                     HomeScreen(
                         uiState = state,
                         onPlanWeekClick = { navController.goToTab(Routes.WEEK_PLAN) },
+                        onRetryWeather = vm::loadWeather,
                         modifier = m
                     )
                 }
@@ -294,6 +297,12 @@ fun StyleSyncApp() {
                                 navController.navigate(Routes.RESULT)
                             }
                         },
+                        onGenerateWithColorClick = {
+                            vm.onGenerateWithColorClick()?.let { outfit ->
+                                PlanStore.save(outfit)
+                                navController.navigate(Routes.RESULT)
+                            }
+                        },
                         modifier = m
                     )
                 }
@@ -316,7 +325,6 @@ fun StyleSyncApp() {
     }
 }
 
-/** Cambia de pestana conservando el estado de cada una. */
 private fun NavHostController.goToTab(route: String) {
     navigate(route) {
         popUpTo(Routes.HOME) { saveState = true }
@@ -325,7 +333,6 @@ private fun NavHostController.goToTab(route: String) {
     }
 }
 
-/** Marco comun: barra superior + boton flotante opcional. */
 @Composable
 private fun TitledScreen(
     title: String,

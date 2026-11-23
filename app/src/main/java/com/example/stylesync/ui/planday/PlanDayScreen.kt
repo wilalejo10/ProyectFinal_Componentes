@@ -10,6 +10,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -28,6 +29,7 @@ fun PlanDayScreen(
     onOccasionSelected: (Occasion) -> Unit,
     onGarmentToggled: (Int) -> Unit,
     onGenerateClick: () -> Unit,
+    onGenerateWithColorClick: () -> Unit,
     modifier: Modifier = Modifier
 ) {
     Column(
@@ -57,6 +59,12 @@ fun PlanDayScreen(
             text = stringResource(R.string.plan_day_garments_label),
             style = MaterialTheme.typography.titleMedium
         )
+        if (uiState.availableGarments.isEmpty()) {
+            Text(
+                text = stringResource(R.string.plan_day_empty_garments),
+                color = MaterialTheme.colorScheme.onSurfaceVariant
+            )
+        }
         uiState.availableGarments.forEach { garment ->
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Checkbox(
@@ -72,12 +80,22 @@ fun PlanDayScreen(
                 color = MaterialTheme.colorScheme.error
             )
         }
+        if (uiState.generateError) {
+            Text(
+                text = stringResource(R.string.plan_day_error_generate),
+                color = MaterialTheme.colorScheme.error
+            )
+        }
 
-        Button(onClick = onGenerateClick, modifier = Modifier.fillMaxWidth()) {
+        Button(onClick = onGenerateWithColorClick, modifier = Modifier.fillMaxWidth()) {
+            Text(stringResource(R.string.plan_day_generate_color))
+        }
+        OutlinedButton(onClick = onGenerateClick, modifier = Modifier.fillMaxWidth()) {
             Text(stringResource(R.string.plan_day_generate))
         }
     }
 }
+
 @Preview(showBackground = true)
 @Composable
 private fun PlanDayScreenPreview() {
@@ -88,6 +106,7 @@ private fun PlanDayScreenPreview() {
         ),
         onOccasionSelected = {},
         onGarmentToggled = {},
-        onGenerateClick = {}
+        onGenerateClick = {},
+        onGenerateWithColorClick = {}
     )
 }

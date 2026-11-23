@@ -9,20 +9,28 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import com.example.stylesync.data.model.SampleData
 import com.example.stylesync.data.model.Weather
+import com.example.stylesync.data.model.WeatherCondition
 import com.example.stylesync.ui.home.components.TodayOutfitSection
-import com.example.stylesync.ui.home.components.WeatherCard
+import com.example.stylesync.ui.home.components.WeatherSection
+import androidx.compose.animation.animateContentSize
 
 @Composable
 fun HomeScreen(
     uiState: HomeUiState,
     onPlanWeekClick: () -> Unit,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onRetryWeather: () -> Unit = {}
 ) {
     Column(
-        modifier = modifier.padding(16.dp),
+        modifier = modifier.animateContentSize().padding(16.dp),
         verticalArrangement = Arrangement.spacedBy(16.dp)
     ) {
-        WeatherCard(weather = uiState.weather)
+        WeatherSection(
+            weather = uiState.weather,
+            loading = uiState.weatherLoading,
+            error = uiState.weatherError,
+            onRetry = onRetryWeather
+        )
         TodayOutfitSection(
             outfit = uiState.todayOutfit,
             onPlanClick = onPlanWeekClick
@@ -35,7 +43,8 @@ fun HomeScreen(
 private fun HomeScreenPreview() {
     HomeScreen(
         uiState = HomeUiState(
-            weather = Weather("Bogotá D.C", 18, "Nublado"),
+            weather = Weather("Ciudad de ejemplo", 18, "", WeatherCondition.CLOUDY),
+            weatherLoading = false,
             todayOutfit = SampleData.outfit
         ),
         onPlanWeekClick = {}
